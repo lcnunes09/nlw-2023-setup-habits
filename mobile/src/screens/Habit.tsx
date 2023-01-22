@@ -10,6 +10,8 @@ import { BackButton } from "../components/BackButton";
 import { Checkbox } from "../components/Checkbox";
 import { ProgressBar } from "../components/ProgressBar";
 import { Loading } from "../components/Loading";
+import { HabitEmpty } from "../components/HabitEmpty";
+
 interface Params {
     date: string
 }
@@ -92,7 +94,7 @@ export function Habit() {
 
                 <View className="mt-6">
                     {
-                        dayInfo?.possibleHabits && 
+                        dayInfo?.possibleHabits ? 
                         dayInfo?.possibleHabits.map(habit => (
                             <Checkbox
                                 key={habit.id}
@@ -101,6 +103,7 @@ export function Habit() {
                                 onPress={() => hangleToggleHabit(habit.id)}
                             />
                         ))
+                        : <HabitEmpty />
                     }
                 </View>
 
