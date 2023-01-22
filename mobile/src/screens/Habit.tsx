@@ -58,7 +58,7 @@ export function Habit() {
         }
     }
 
-    async function hangleToggleHabit(habitId: string) {
+    async function handleToggleHabit(habitId: string) {
         if (completedHabits.includes(habitId)) {
             setCompletedHabits(prevState => prevState.filter(habit => habit !== habitId))
         } else {
@@ -106,7 +106,7 @@ export function Habit() {
                                 title={habit.title}
                                 checked={completedHabits.includes(habit.id)}
                                 disabled={isDateInPast}
-                                onPress={() => hangleToggleHabit(habit.id)}
+                                onPress={() => handleToggleHabit(habit.id)}
                             />
                         ))
                         : <HabitEmpty />
