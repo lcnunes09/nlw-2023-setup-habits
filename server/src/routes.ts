@@ -74,7 +74,7 @@ export async function appRoutes(app: FastifyInstance) {
     })
 
     app.patch('/habits/:id/toggle', async (request) => {
-        
+
         const toggleHabitParams = z.object({
             id: z.string().uuid(),
         })
@@ -91,7 +91,7 @@ export async function appRoutes(app: FastifyInstance) {
 
         if (!day) {
             day = await prisma.day.create({
-                data: { 
+                data: {
                     date: today,
                 }
             })
@@ -103,7 +103,7 @@ export async function appRoutes(app: FastifyInstance) {
                     day_id: day.id,
                     habit_id: id,
                 }
-            }                
+            }
         })
 
         if (dayHabit) {
@@ -128,20 +128,20 @@ export async function appRoutes(app: FastifyInstance) {
                 D.id, 
                 D.date,
                 (
-                    SELECT 
-                        cast(count(*) as float) 
-                    FROM day_habits DH
-                    WHERE DH.day_id = D.id
-                ) AS completed,
+                SELECT 
+                    cast(count(*) as float)
+                FROM day_habits DH
+                WHERE DH.day_id = D.id
+                ) as completed,
                 (
-                    SELECT 
-                        cast(count(*) as float)
-                    FROM habit_week_days HWD
-                    JOIN habits H
-                        ON H.id = HWD.habit_id
-                    WHERE 
-                        HWD.week_day = cast(strftime('%w', D.date/1000.0, 'unixepoch') as int)
-                        AND H.created_at <= D.date 
+                SELECT
+                    cast(count(*) as float)
+                FROM habit_week_days HDW
+                JOIN habits H
+                    ON H.id = HDW.habit_id
+                WHERE
+                    HDW.week_day = cast(strftime('%w', D.date/1000.0, 'unixepoch') as int)
+                    AND H.created_at <= D.date
                 ) as amount
             FROM days D
         `
