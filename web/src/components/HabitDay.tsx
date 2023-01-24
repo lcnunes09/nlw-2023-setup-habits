@@ -4,26 +4,28 @@ import clsx from 'clsx'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 
+import { generateProgressPercentage } from '../utils/generate-progress-percentage'
+
 import { HabitsList } from './HabitDayList'
 import { ProgressBar } from './ProgressBar'
 
 interface HabitDayProps {
+    amountCompleted?: number
+    amountOfHabits?: number
     date: Date
-    defaultCompleted?: number
-    amount?: number
 }
 
-export function HabitDay({ defaultCompleted = 0, amount = 0, date }: HabitDayProps) {
-    const [completed, setCompleted] = useState(defaultCompleted)
-
-    const completedPercentage = amount > 0 ? Math.round((completed / amount) * 100) : 0
-
+export function HabitDay({ amountCompleted = 0, amountOfHabits = 0, date }: HabitDayProps) {
+    const [completed, setCompleted] = useState(amountCompleted)
+    
     const dayAndMonth = dayjs(date).format('DD/MM')
     const dayOfWeek = dayjs(date).format('dddd')
-
+    
     function handleCompletedChanged(completed: number) {
         setCompleted(completed)
     }
+    
+    const completedPercentage = amountOfHabits > 0 ? generateProgressPercentage(amountOfHabits, completed) : 0
 
     return (
         <Popover.Root>
